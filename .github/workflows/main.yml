@@ -25,12 +25,14 @@ jobs:
         with:
           tags: express:latest
           outputs: type=docker,dest=${{ runner.temp }}/express.tar   
-          
-      # Run Container using Image (Test)
+
+      #Load an image or repository from a tar archive
       - name: Load image
         run: |
           docker load --input ${{ runner.temp }}/express.tar
           docker image ls -a
+
+      # Run Container using Image (Test)
       - name: Create Container using image
         run: docker run -d -p 3000:3000 express
         
@@ -45,22 +47,32 @@ jobs:
     runs-on: ubuntu-latest # specify the build machine
     needs: CI
     steps:
+      # Download Image from other job (CI)
       - name: Download artifact
         uses: actions/download-artifact@v4
         with:
           name: express
           path: ${{ runner.temp }}
 
+      # Load an image or repository from a tar archive
       - name: Load image
         run: |
           docker load --input ${{ runner.temp }}/express.tar
           docker image ls -a
-          
-      - name: Create Container using image
-        run: |
-          docker load --input ${{ runner.temp }}/express.tar
-          docker image ls -a
-          docker run -d -p 3000:3000 express
 
+      # Change image name/tag
+      - name: Rename/Retag Image with proper tag name
+        run: docker image tag express ${{ vars.DOCKERHUB_USERNAME }}/express:latest
+
+      # Log in to DockerHub
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ vars.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      # PUSH IMAGE TO DOCKERHUB
+      - name: Push Image
+        run: docker push ${{vars.DOCKERHUB_USERNAME }}/express
       
-
+      
