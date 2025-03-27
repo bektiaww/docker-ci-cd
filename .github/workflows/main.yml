@@ -27,7 +27,8 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          path: ${{ runner.temp }}/express
+          name: express
+          path: ${{ runner.temp }}
   CD:
     runs-on: ubuntu-latest # specify the build machine
     needs: CI
@@ -36,7 +37,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: express
-          path: /
+          path: ${{ runner.temp }}
       - name: Create Container using image
         run: docker run -d -p 3000:3000 express
 
