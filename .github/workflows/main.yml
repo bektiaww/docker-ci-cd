@@ -27,8 +27,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: express
-          path: /
+          path: ${{ runner.temp }}/express
   CD:
     runs-on: ubuntu-latest # specify the build machine
     needs: CI
