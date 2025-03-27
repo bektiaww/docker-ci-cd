@@ -21,7 +21,7 @@ jobs:
         run: |
           docker build -t express -o . .
           ls
-          cd var/lib/docker
+          cd ./var/lib/docker
           ls
       # Run Container using Image (Test)
       - name: Create Container using image
