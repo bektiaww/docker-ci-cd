@@ -3,10 +3,23 @@ on:
   push:
     branches:
       - "main"
-
 jobs:
-  build:
+  test:
     runs-on: ubuntu-latest
     steps:
       - name: Run a one-line script
         run: echo Hello, world!
+  CI:
+    runs-on: ubuntu-latest # specify the build machine
+    steps:
+      # Clone our code into runner
+      - name: Checkout
+        uses: actions/checkout@v3
+      
+      # Build the Docker image
+      - name: Build the Docker image
+        run: |
+          docker build -t express .    
+      # Run Container using Image (Test)
+      - name: Create Container using image
+        run: docker run -d -p 3000:3000 express
