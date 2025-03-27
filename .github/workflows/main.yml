@@ -21,6 +21,8 @@ jobs:
         run: |
           docker build -t express -o . .
           ls
+          cd var/lib/docker
+          ls
       # Run Container using Image (Test)
       - name: Create Container using image
         run: docker run -d -p 3000:3000 express
