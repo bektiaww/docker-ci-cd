@@ -19,7 +19,7 @@ jobs:
       # Build the Docker image
       - name: Build the Docker image
         run: |
-          docker buildx build -t express -o type=docker,dest=${{ runner.temp }}/express.tar .
+          docker buildx build -o type=docker,dest=${{ runner.temp }}/express.tar .
           cd ${{ runner.var }}
           ls
 
