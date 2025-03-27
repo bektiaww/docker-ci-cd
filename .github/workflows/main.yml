@@ -19,10 +19,11 @@ jobs:
       # Build the Docker image
       - name: Build the Docker image
         run: |
-          docker build -t express .    
+          docker build -t express . 
+          ls
+          cd /var/lib/docker/image
+          ls
       # Run Container using Image (Test)
-      - name: list
-        run: docker image ls -a
       - name: Create Container using image
         run: docker run -d -p 3000:3000 express
       # Upload Image so it can be used by others job (CD)
