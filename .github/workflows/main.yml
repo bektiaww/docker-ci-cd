@@ -19,9 +19,8 @@ jobs:
       # Build the Docker image
       - name: Build the Docker image
         run: |
-          docker build -t express -o . .
-          ls
-          cd ${{ runner.var}}
+          docker build -t express .
+          find ~ -name "express"
           ls
       # Run Container using Image (Test)
       - name: Create Container using image
