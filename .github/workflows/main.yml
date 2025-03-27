@@ -58,7 +58,7 @@ jobs:
           
       - name: Create Container using image
         run: |
-          docker load --input ${{ runner.temp }}/express.zip
+          docker load --input ${{ runner.temp }}/express.tar
           docker image ls -a
           docker run -d -p 3000:3000 express
 
