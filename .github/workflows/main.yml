@@ -74,5 +74,20 @@ jobs:
       # PUSH IMAGE TO DOCKERHUB
       - name: Push Image
         run: docker push ${{vars.DOCKERHUB_USERNAME }}/express
-      
-      
+
+  Deployment:
+    runs-on: ubuntu-latest
+    needs: CD
+    steps:
+      - name: executing remote ssh commands using password
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.KEY }}          
+          port: ${{ secrets.PORT }}
+          script: |
+            docker pull ${{ vars.DOCKERHUB_USERNAME }}/express:latest  
+            docker stop express      
+            docker rm express    
+            docker run -d --name express -p 3000:3000 express:latest      
